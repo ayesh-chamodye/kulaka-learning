@@ -4,30 +4,34 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
 /**
- * Renders a placeholder video thumbnail with a centered play icon.
- * Used as a visual stand-in for videos that have not yet been fully prepared.
+ * Renders a video thumbnail. Shows the provided image when available,
+ * otherwise falls back to a centered play icon placeholder.
  */
-function VideoThumbnail() {
+function VideoThumbnail({ thumbnailUrl }: { thumbnailUrl?: string | null }) {
   return (
     <div className="relative h-44 w-full overflow-hidden bg-slate-900">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 shadow-lg">
-          <svg
-            className="h-6 w-6 text-blue-600"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path d="M8 5.14v14l11-7-11-7z" />
-          </svg>
+      {thumbnailUrl ? (
+        <img src={thumbnailUrl} alt="" className="h-full w-full object-cover" />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 shadow-lg">
+            <svg
+              className="h-6 w-6 text-blue-600"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M8 5.14v14l11-7-11-7z" />
+            </svg>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
 /**
- * Represents a featured video shown on the landing page.
+ * Represents a video shown on the landing page.
  */
 interface FeaturedVideo {
   id: string;
@@ -35,6 +39,7 @@ interface FeaturedVideo {
   duration: string;
   level: string;
   price: string;
+  thumbnail_url: string | null;
 }
 
 /**
@@ -59,14 +64,22 @@ export default async function Home() {
     }
   }
 
-  const featuredVideos: FeaturedVideo[] = [
-    { id: 'web-dev', title: 'Web Development Bootcamp', duration: '24h', level: 'Beginner', price: '$49' },
-    { id: 'data-science', title: 'Data Science Fundamentals', duration: '18h', level: 'Intermediate', price: '$59' },
-    { id: 'ui-ux', title: 'UI/UX Design Mastery', duration: '15h', level: 'Beginner', price: '$39' },
-    { id: 'mobile-app', title: 'Mobile App Development', duration: '28h', level: 'Intermediate', price: '$69' },
-    { id: 'marketing', title: 'Digital Marketing Pro', duration: '16h', level: 'Beginner', price: '$44' },
-    { id: 'cloud', title: 'Cloud Computing Essentials', duration: '20h', level: 'Advanced', price: '$79' },
-  ];
+  const { data: videos } = await supabase
+    .from('videos')
+    .select('id, title, duration, price, thumbnail_url, mux_playback_id, status, visibility')
+    .eq('status', 'ready')
+    .eq('visibility', 'public')
+    .order('created_at', { ascending: false })
+    .limit(6);
+
+  const featuredVideos: FeaturedVideo[] = (videos || []).map((video) => ({
+    id: video.id,
+    title: video.title,
+    duration: video.duration ? `${Math.floor(video.duration / 60)}h` : 'Video',
+    level: 'Video',
+    price: `$${video.price || 0}`,
+    thumbnail_url: video.thumbnail_url || (video.mux_playback_id ? `https://image.mux.com/${video.mux_playback_id}/thumbnail.webp?time=0` : null),
+  }));
 
   return (
     <div className="min-h-screen">
@@ -136,7 +149,7 @@ export default async function Home() {
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {featuredVideos.map((course) => (
                 <div key={course.id} className="course-card">
-                  <VideoThumbnail />
+                  <VideoThumbnail thumbnailUrl={course.thumbnail_url} />
                   <div className="p-6">
                     <div className="mb-3 flex items-center gap-2">
                       <span className="learning-badge">{course.level}</span>
@@ -187,13 +200,13 @@ export default async function Home() {
         {/* CTA */}
         <section className="border-t border-gray-100 bg-slate-50 py-24">
           <div className="mx-auto max-w-screen-xl px-4">
-            <div className="learning-card bg-blue-600 p-12 text-center text-white md:p-16">
+            <div className="cta-section p-12 text-center text-white md:p-16">
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">Ready to Start Watching?</h2>
               <p className="mx-auto mb-10 max-w-2xl text-lg text-blue-100">
                 Browse our video catalog and buy the content you want.
                 Your next lesson is one click away.
               </p>
-              <a href="#courses" className="inline-block rounded-lg bg-white px-8 py-3 text-base font-semibold text-blue-600 transition hover:bg-blue-50">
+              <a href="#courses" className="cta-button">
                 Browse Videos
               </a>
             </div>
