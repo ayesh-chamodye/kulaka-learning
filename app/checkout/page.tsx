@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 
 /**
@@ -21,9 +21,9 @@ const COURSES = {
  * Collects contact and payment details, then redirects to the watch page.
  */
 export default function Checkout() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const videoParam = searchParams.get('video');
+  const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+  const videoParam = params.get('video');
   const course = videoParam && videoParam in COURSES ? COURSES[videoParam as keyof typeof COURSES] : null;
   const item = course;
   const [processing, setProcessing] = useState(false);
