@@ -12,7 +12,8 @@ const COURSES = {
 export default function Cart() {
   const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
   const videoParam = params.get('video');
-  const cartItems = videoParam && COURSES[videoParam] ? [COURSES[videoParam]] : [];
+  const course = videoParam && videoParam in COURSES ? COURSES[videoParam as keyof typeof COURSES] : null;
+  const cartItems = course ? [course] : [];
 
   const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 

@@ -17,7 +17,8 @@ export default function Checkout() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const videoParam = searchParams.get('video');
-  const item = videoParam && COURSES[videoParam] ? COURSES[videoParam] : null;
+  const course = videoParam && videoParam in COURSES ? COURSES[videoParam as keyof typeof COURSES] : null;
+  const item = course;
   const [processing, setProcessing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
