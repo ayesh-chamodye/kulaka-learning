@@ -6,10 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
-/**
- * Shape of a video record as displayed in the seller dashboard.
- */
-interface Video {
+interface VideoAnalytics {
   id: string;
   title: string;
   description: string;
@@ -19,35 +16,45 @@ interface Video {
   price: number;
   created_at: string;
   thumbnail_url: string | null;
+  buyers: number;
+  revenue: number;
 }
 
-/**
- * Seller dashboard page.
- * Shows the current creator's uploaded videos with status, views, and pricing.
- */
 export default function SellerDashboardPage() {
   const { user, loading } = useAuth();
-  const [videos, setVideos] = useState<Video[]>([]);
+  const [videos, setVideos] = useState<VideoAnalytics[]>([]);
   const [pageLoading, setPageLoading] = useState(true);
   const supabase = createClient();
 
   useEffect(() => {
     if (!user) return;
 
-    const fetchVideos = async () => {
-      const { data } = await supabase
-        .from('videos')
-        .select('*')
-        .eq('creator_id', user.id)
-        .order('created_at', { ascending: false });
+    const fetchAnalytics = async () => {
+      const response = await fetch('/api/seller/analytics');
+      if (response.ok) {
+        const data = await response.json();
+        setVideos(data.videos || []);
+      } else {
+        const { data } = await supabase
+          .from('videos')
+          .select('*')
+          .eq('creator_id', user.id)
+          .order('created_at', { ascending: false });
 
-      if (data) {
-        setVideos(data);
+        if (data) {
+          setVideos(
+            data.map((video) => ({
+              ...video,
+              buyers: 0,
+              revenue: 0,
+            }))
+          );
+        }
       }
       setPageLoading(false);
     };
 
-    fetchVideos();
+    fetchAnalytics();
   }, [user, supabase]);
 
   if (loading || pageLoading) {
@@ -84,7 +91,10 @@ export default function SellerDashboardPage() {
             <h1 className="section-title text-3xl font-bold">Seller Dashboard</h1>
             <p className="section-description mt-1">Manage your videos and track performance.</p>
           </div>
-          <Link href="/seller/upload" className="btn-primary px-6 py-3">Upload New Video</Link>
+          <div className="flex gap-3">
+            <Link href="/seller/analytics" className="btn-secondary px-6 py-3">Analytics</Link>
+            <Link href="/seller/upload" className="btn-primary px-6 py-3">Upload New Video</Link>
+          </div>
         </div>
 
         <div className="grid gap-6">
@@ -113,8 +123,12 @@ export default function SellerDashboardPage() {
                       <div className="text-muted text-xs">Views</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-primary text-xl font-bold">${video.price}</div>
-                      <div className="text-muted text-xs">Price</div>
+                      <div className="text-primary text-xl font-bold">{video.buyers}</div>
+                      <div className="text-muted text-xs">Buyers</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-primary text-xl font-bold">${video.revenue}</div>
+                      <div className="text-muted text-xs">Revenue</div>
                     </div>
                     <div className="text-muted text-xs">
                       {new Date(video.created_at).toLocaleDateString()}

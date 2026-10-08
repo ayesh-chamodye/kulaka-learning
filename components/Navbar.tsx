@@ -61,9 +61,14 @@ export default function Navbar() {
                   </div>
                   <div className="h-px bg-gray-100" />
                   {profile?.role === 'instructor' && (
-                    <Link href="/seller" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setDropdownOpen(false)}>
-                      Seller Dashboard
-                    </Link>
+                    <>
+                      <Link href="/seller" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setDropdownOpen(false)}>
+                        Seller Dashboard
+                      </Link>
+                      <Link href="/seller/analytics" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setDropdownOpen(false)}>
+                        Analytics
+                      </Link>
+                    </>
                   )}
                   <Link href="/library" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setDropdownOpen(false)}>
                     My Library

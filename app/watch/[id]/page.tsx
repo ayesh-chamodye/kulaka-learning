@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import TrackedPlayer from './TrackedPlayer';
 
 /**
  * Fallback metadata for videos that are not yet persisted in the database.
@@ -141,12 +142,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <div className="overflow-hidden rounded-lg bg-black">
-              <iframe
-                src={`https://player.mux.com/${playbackId}?metadata-video-title=${encodeURIComponent(resolvedTitle)}&video-title=${encodeURIComponent(resolvedTitle)}`}
-                style={{ width: '100%', border: 'none', aspectRatio: '16/9' }}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                allowFullScreen
-              />
+              <TrackedPlayer videoId={id} playbackId={playbackId} title={resolvedTitle} />
             </div>
             <div className="mt-4">
               <h1 className="text-xl font-bold text-gray-900 md:text-2xl">{resolvedTitle}</h1>

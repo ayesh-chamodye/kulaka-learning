@@ -471,3 +471,18 @@ WITH CHECK (user_id = (SELECT auth.uid()));
 DROP POLICY IF EXISTS orders_update_self ON public.orders;
 CREATE POLICY orders_update_self ON public.orders FOR UPDATE TO authenticated
 USING (user_id = (SELECT auth.uid())) WITH CHECK (user_id = (SELECT auth.uid()));
+
+-- Safe helper to increment video views without race conditions.
+CREATE OR REPLACE FUNCTION public.increment_video_views(video_id uuid)
+RETURNS void
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = ''
+AS $function$
+  UPDATE public.videos
+  SET views = GREATEST(COALESCE(views, 0) + 1, 0)
+  WHERE id = $1;
+$function$;
+REVOKE ALL ON FUNCTION public.increment_video_views(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.increment_video_views(uuid) TO anon, authenticated;
