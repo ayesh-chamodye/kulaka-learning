@@ -69,7 +69,7 @@ export default function RoleSelectionPage() {
             <div className="mb-8 text-center">
               <h1 className="section-title mb-2 text-2xl font-bold">Choose your role</h1>
               <p className="section-description text-sm">
-                Are you signing up as a student, instructor, or admin?
+                Are you signing up as a student or instructor?
               </p>
             </div>
 
@@ -84,7 +84,6 @@ export default function RoleSelectionPage() {
                 {[
                   { value: 'student', label: 'Student', desc: 'Browse and watch videos' },
                   { value: 'instructor', label: 'Instructor', desc: 'Upload and sell videos' },
-                  { value: 'admin', label: 'Admin', desc: 'Manage categories and users' },
                 ].map((option) => (
                   <label
                     key={option.value}
