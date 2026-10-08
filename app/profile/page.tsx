@@ -6,6 +6,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import { put } from '@vercel/blob';
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * Profile page for authenticated users.
+ * Allows viewing and updating profile details including avatar upload via Vercel Blob.
+ */
 export default function ProfilePage() {
   const { user, loading } = useAuth();
   const [displayName, setDisplayName] = useState('');
@@ -37,6 +43,9 @@ export default function ProfilePage() {
     fetchProfile();
   }, [user, supabase]);
 
+  /**
+   * Handles avatar file selection and uploads it to Vercel Blob.
+   */
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -50,6 +59,10 @@ export default function ProfilePage() {
     }
   };
 
+  /**
+   * Submits profile updates to Supabase.
+   * Only allows the authenticated user to update their own profile fields.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;

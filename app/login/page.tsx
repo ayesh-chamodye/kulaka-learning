@@ -5,6 +5,12 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * Login page.
+ * Allows users to sign in with email/password or Google OAuth.
+ */
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,6 +18,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { signIn, signInWithGoogle } = useAuth();
 
+  /**
+   * Handles email/password login form submission.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);

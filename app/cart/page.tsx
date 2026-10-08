@@ -1,5 +1,10 @@
+'use client';
+
 import Navbar from '@/components/Navbar';
 
+/**
+ * Mapping of supported video identifiers to their display metadata and prices.
+ */
 const COURSES = {
   'web-dev': { title: 'Web Development Bootcamp', price: 49 },
   'data-science': { title: 'Data Science Fundamentals', price: 59 },
@@ -9,6 +14,12 @@ const COURSES = {
   'cloud': { title: 'Cloud Computing Essentials', price: 79 },
 };
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * Shopping cart page.
+ * Reads the selected video from query parameters and shows a summary with checkout link.
+ */
 export default function Cart() {
   const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
   const videoParam = params.get('video');

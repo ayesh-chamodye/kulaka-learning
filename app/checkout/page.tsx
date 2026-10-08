@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 
+/**
+ * Mapping of supported video identifiers to their display metadata and prices.
+ */
 const COURSES = {
   'web-dev': { title: 'Web Development Bootcamp', price: 49 },
   'data-science': { title: 'Data Science Fundamentals', price: 59 },
@@ -13,6 +16,12 @@ const COURSES = {
   'cloud': { title: 'Cloud Computing Essentials', price: 79 },
 };
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * Checkout page for mock video purchase.
+ * Collects contact and payment details, then redirects to the watch page.
+ */
 export default function Checkout() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -21,6 +30,10 @@ export default function Checkout() {
   const item = course;
   const [processing, setProcessing] = useState(false);
 
+  /**
+   * Handles checkout form submission.
+   * Prevents default form behavior, simulates processing, then navigates to the watch page.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setProcessing(true);

@@ -1,16 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from "next/image";
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+/**
+ * Top-level navigation bar for Kulaka Learning.
+ * Handles responsive layout, authentication-aware actions, and mobile menu state.
+ */
 export default function Navbar() {
   const { user, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
+  /**
+   * Determines whether a navigation link should be styled as active.
+   * @param href - Target route to compare against the current pathname
+   * @returns CSS class string for active state, or empty string when inactive
+   */
   const isActive = (href: string) => pathname === href ? 'text-blue-600' : '';
 
   return (

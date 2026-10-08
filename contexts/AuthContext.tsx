@@ -4,6 +4,9 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
+/**
+ * Shape of the authentication context exposed to the rest of the application.
+ */
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -16,6 +19,10 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Provides Supabase authentication state and methods to the component tree.
+ * Listens for auth state changes and exposes sign-in, sign-up, and sign-out helpers.
+ */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -43,6 +50,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [supabase.auth]);
 
+  /**
+   * Signs a user in with email and password.
+   */
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -51,6 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
+  /**
+   * Registers a new user with email, password, and optional profile metadata.
+   */
   const signUp = async (email: string, password: string, metadata?: Record<string, any>) => {
     const { error } = await supabase.auth.signUp({
       email,
@@ -62,6 +75,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
+  /**
+   * Initiates Google OAuth sign-in flow.
+   */
   const signInWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -71,6 +87,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  /**
+   * Signs the current user out.
+   */
   const signOut = async () => {
     await supabase.auth.signOut();
   };
@@ -82,6 +101,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * React hook for accessing authentication state and methods.
+ * Must be used within an AuthProvider.
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

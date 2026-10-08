@@ -6,6 +6,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * Shape of a video record as displayed in the seller dashboard.
+ */
 interface Video {
   id: string;
   title: string;
@@ -18,6 +23,10 @@ interface Video {
   thumbnail_url: string | null;
 }
 
+/**
+ * Seller dashboard page.
+ * Shows the current creator's uploaded videos with status, views, and pricing.
+ */
 export default function SellerDashboardPage() {
   const { user, loading } = useAuth();
   const [videos, setVideos] = useState<Video[]>([]);

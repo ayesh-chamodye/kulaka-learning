@@ -2,6 +2,10 @@
 
 import Image from "next/image";
 
+/**
+ * Site footer displayed on marketing and app pages.
+ * Shows brand logo and copyright notice with the current year.
+ */
 export default function Footer() {
   const year = new Date().getFullYear();
   return (

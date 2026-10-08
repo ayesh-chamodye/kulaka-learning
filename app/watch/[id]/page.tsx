@@ -2,6 +2,10 @@ import Navbar from '@/components/Navbar';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
+/**
+ * Fallback metadata for videos that are not yet persisted in the database.
+ * Used during early development and testing.
+ */
 const MOCK_VIDEOS: Record<string, { title: string }> = {
   'web-dev': { title: 'Web Development Bootcamp' },
   'data-science': { title: 'Data Science Fundamentals' },
@@ -17,6 +21,10 @@ interface WatchPageProps {
   }>;
 }
 
+/**
+ * Video watch page.
+ * Enforces authentication, verifies video readiness and purchase status, then renders the Mux player.
+ */
 export default async function WatchPage({ params }: WatchPageProps) {
   const { id } = await params;
   const supabase = await createClient();

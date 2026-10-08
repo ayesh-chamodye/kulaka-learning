@@ -17,7 +17,7 @@ An independent video learning platform built with Next.js, Supabase, Mux, and Ve
 - **Frontend**: Next.js 16, React 19, Tailwind CSS 4
 - **Database & Auth**: Supabase PostgreSQL + Supabase Auth
 - **Video Hosting**: Mux
-- **File Storage**: Vercel Blob
+- **File Storage**: Vercel Blob (avatars/resources); video files streamed through Mux
 - **Hosting**: Vercel
 
 ## Prerequisites
@@ -104,7 +104,7 @@ All tables have Row Level Security (RLS) enabled with appropriate policies.
 app/
   api/
     checkout/route.ts      # Mock checkout API
-    upload/route.ts        # Video upload to Supabase Storage
+    upload/route.ts        # Mux direct upload helper for video files
   auth/callback/page.tsx   # OAuth callback
   cart/page.tsx            # Shopping cart
   checkout/page.tsx        # Checkout page

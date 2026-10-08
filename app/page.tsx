@@ -1,6 +1,10 @@
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
+/**
+ * Renders a placeholder video thumbnail with a centered play icon.
+ * Used as a visual stand-in for videos that have not yet been fully prepared.
+ */
 function VideoThumbnail() {
   return (
     <div className="relative h-44 w-full overflow-hidden bg-slate-900">
@@ -20,50 +24,29 @@ function VideoThumbnail() {
   );
 }
 
+/**
+ * Represents a featured video shown on the landing page.
+ */
+interface FeaturedVideo {
+  id: string;
+  title: string;
+  duration: string;
+  level: string;
+  price: string;
+}
+
+/**
+ * Landing page for the independent video learning platform.
+ * Displays hero content, featured videos, how-it-works steps, and conversion sections.
+ */
 export default function Home() {
-  const courses = [
-    {
-      id: 'web-dev',
-      title: 'Web Development Bootcamp',
-      duration: '24h',
-      level: 'Beginner',
-      price: '$49',
-    },
-    {
-      id: 'data-science',
-      title: 'Data Science Fundamentals',
-      duration: '18h',
-      level: 'Intermediate',
-      price: '$59',
-    },
-    {
-      id: 'ui-ux',
-      title: 'UI/UX Design Mastery',
-      duration: '15h',
-      level: 'Beginner',
-      price: '$39',
-    },
-    {
-      id: 'mobile-app',
-      title: 'Mobile App Development',
-      duration: '28h',
-      level: 'Intermediate',
-      price: '$69',
-    },
-    {
-      id: 'marketing',
-      title: 'Digital Marketing Pro',
-      duration: '16h',
-      level: 'Beginner',
-      price: '$44',
-    },
-    {
-      id: 'cloud',
-      title: 'Cloud Computing Essentials',
-      duration: '20h',
-      level: 'Advanced',
-      price: '$79',
-    },
+  const featuredVideos: FeaturedVideo[] = [
+    { id: 'web-dev', title: 'Web Development Bootcamp', duration: '24h', level: 'Beginner', price: '$49' },
+    { id: 'data-science', title: 'Data Science Fundamentals', duration: '18h', level: 'Intermediate', price: '$59' },
+    { id: 'ui-ux', title: 'UI/UX Design Mastery', duration: '15h', level: 'Beginner', price: '$39' },
+    { id: 'mobile-app', title: 'Mobile App Development', duration: '28h', level: 'Intermediate', price: '$69' },
+    { id: 'marketing', title: 'Digital Marketing Pro', duration: '16h', level: 'Beginner', price: '$44' },
+    { id: 'cloud', title: 'Cloud Computing Essentials', duration: '20h', level: 'Advanced', price: '$79' },
   ];
 
   return (
@@ -121,28 +104,16 @@ export default function Home() {
             </div>
             <div className="grid gap-8 md:grid-cols-3">
               {[
-                {
-                  step: '1',
-                  title: 'Choose a Video',
-                  desc: 'Browse our catalog and pick the video you want to watch.',
-                },
-                {
-                  step: '2',
-                  title: 'Checkout Securely',
-                  desc: 'Add to cart and complete your purchase safely.',
-                },
-                {
-                  step: '3',
-                  title: 'Watch Instantly',
-                  desc: 'Stream your purchased video right away.',
-                },
-              ].map((item) => (
-                <div key={item.step} className="learning-card p-8 text-center">
+                { step: '1', title: 'Choose a Video', desc: 'Browse our catalog and pick the video you want to watch.' },
+                { step: '2', title: 'Checkout Securely', desc: 'Add to cart and complete your purchase safely.' },
+                { step: '3', title: 'Watch Instantly', desc: 'Stream your purchased video right away.' },
+              ].map((step) => (
+                <div key={step.step} className="learning-card p-8 text-center">
                   <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-2xl font-bold text-blue-600">
-                    {item.step}
+                    {step.step}
                   </div>
-                  <h3 className="section-title mb-3 text-xl font-bold">{item.title}</h3>
-                  <p className="section-description">{item.desc}</p>
+                  <h3 className="section-title mb-3 text-xl font-bold">{step.title}</h3>
+                  <p className="section-description">{step.desc}</p>
                 </div>
               ))}
             </div>
@@ -159,7 +130,7 @@ export default function Home() {
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {courses.map((course) => (
+              {featuredVideos.map((course) => (
                 <div key={course.id} className="course-card">
                   <VideoThumbnail />
                   <div className="p-6">
@@ -195,22 +166,10 @@ export default function Home() {
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {[
-                {
-                  title: 'One-Time Purchase',
-                  desc: 'Buy individual videos or courses. No subscriptions required.',
-                },
-                {
-                  title: 'Instant Access',
-                  desc: 'Watch immediately after purchase. No waiting, no shipping.',
-                },
-                {
-                  title: 'High Quality',
-                  desc: 'Crystal-clear HD videos with professional production quality.',
-                },
-                {
-                  title: 'Lifetime Ownership',
-                  desc: 'Once purchased, your videos are yours to keep and rewatch.',
-                },
+                { title: 'One-Time Purchase', desc: 'Buy individual videos or courses. No subscriptions required.' },
+                { title: 'Instant Access', desc: 'Watch immediately after purchase. No waiting, no shipping.' },
+                { title: 'High Quality', desc: 'Crystal-clear HD videos with professional production quality.' },
+                { title: 'Lifetime Ownership', desc: 'Once purchased, your videos are yours to keep and rewatch.' },
               ].map((feature) => (
                 <div key={feature.title} className="learning-card p-6 text-center">
                   <h3 className="section-title mb-2 text-lg font-bold">{feature.title}</h3>

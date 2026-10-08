@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+/**
+ * Mock checkout API route.
+ * Validates the requested video, ensures the user has not already purchased it,
+ * then creates or updates a completed order record.
+ */
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
