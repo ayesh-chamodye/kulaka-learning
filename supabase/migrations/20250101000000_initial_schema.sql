@@ -214,8 +214,42 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = ''
 AS $function$
+DECLARE
+  raw_username text;
+  clean_username text;
+  suffix int := 0;
 BEGIN
-  INSERT INTO public.profiles (id) VALUES (NEW.id);
+  raw_username := COALESCE(
+    NEW.raw_user_meta_data->>'username',
+    NEW.raw_user_meta_data->>'full_name',
+    NEW.raw_user_meta_data->>'name',
+    split_part(NEW.email, '@', 1)
+  );
+
+  clean_username := lower(regexp_replace(raw_username, '[^a-z0-9_-]', '', 'g'));
+  IF clean_username = '' THEN
+    clean_username := 'user';
+  END IF;
+
+  WHILE EXISTS (SELECT 1 FROM public.profiles WHERE username = clean_username || COALESCE('_' || suffix::text, '')) LOOP
+    suffix := suffix + 1;
+  END LOOP;
+
+  IF suffix > 0 THEN
+    clean_username := clean_username || '_' || suffix::text;
+  END IF;
+
+  INSERT INTO public.profiles (
+    id,
+    username,
+    display_name,
+    avatar_url
+  ) VALUES (
+    NEW.id,
+    clean_username,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
+    NEW.raw_user_meta_data->>'picture'
+  );
   RETURN NEW;
 END;
 $function$;

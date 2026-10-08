@@ -10,15 +10,22 @@ import { useAuth } from '@/contexts/AuthContext';
  */
 export default function AuthCallbackPage() {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
 
   useEffect(() => {
-    if (!loading && user) {
-      router.replace('/');
-    } else if (!loading && !user) {
+    if (loading) return;
+
+    if (!user) {
       router.replace('/login');
+      return;
     }
-  }, [user, loading, router]);
+
+    if (!profile?.role || profile.role === 'user') {
+      router.replace('/role-selection');
+    } else {
+      router.replace('/');
+    }
+  }, [user, profile, loading, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">

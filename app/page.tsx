@@ -1,5 +1,7 @@
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 
 /**
  * Renders a placeholder video thumbnail with a centered play icon.
@@ -39,7 +41,24 @@ interface FeaturedVideo {
  * Landing page for the independent video learning platform.
  * Displays hero content, featured videos, how-it-works steps, and conversion sections.
  */
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profile?.role === 'instructor') {
+      redirect('/seller');
+    } else if (profile?.role === 'admin') {
+      redirect('/seller');
+    }
+  }
+
   const featuredVideos: FeaturedVideo[] = [
     { id: 'web-dev', title: 'Web Development Bootcamp', duration: '24h', level: 'Beginner', price: '$49' },
     { id: 'data-science', title: 'Data Science Fundamentals', duration: '18h', level: 'Intermediate', price: '$59' },
