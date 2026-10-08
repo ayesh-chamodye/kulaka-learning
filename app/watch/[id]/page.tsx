@@ -2,6 +2,8 @@ import Navbar from '@/components/Navbar';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * Fallback metadata for videos that are not yet persisted in the database.
  * Used during early development and testing.
