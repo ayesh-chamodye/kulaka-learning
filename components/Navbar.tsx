@@ -11,12 +11,9 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center space-x-3 md:order-2">
-          <button
-            type="button"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200"
-          >
-            Get Started
-          </button>
+          <a href="/cart" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200">
+            Cart
+          </a>
 
           {/* Mobile Menu Button */}
           <button
@@ -47,7 +44,7 @@ export default function Navbar() {
           <ul className="flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 font-medium md:flex-row md:gap-8 md:border-0 md:p-0">
             <li>
               <a
-                href="#"
+                href="/"
                 className="block rounded px-3 py-2 text-blue-600 md:p-0"
               >
                 Home
@@ -56,28 +53,28 @@ export default function Navbar() {
 
             <li>
               <a
-                href="#"
+                href="/#courses"
                 className="block rounded px-3 py-2 text-gray-700 transition hover:text-blue-600 md:p-0"
               >
-                Courses
+                Videos
               </a>
             </li>
 
             <li>
               <a
-                href="#"
+                href="/cart"
                 className="block rounded px-3 py-2 text-gray-700 transition hover:text-blue-600 md:p-0"
               >
-                About
+                Cart
               </a>
             </li>
 
             <li>
               <a
-                href="#"
+                href="/checkout"
                 className="block rounded px-3 py-2 text-gray-700 transition hover:text-blue-600 md:p-0"
               >
-                Contact
+                Checkout
               </a>
             </li>
           </ul>

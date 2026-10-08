@@ -1,4 +1,4 @@
 export const siteConfig = {
   name: "Kulaka Learning",
-  description: "A platform for learning and development.",
+  description: "Module-based video learning platform. Buy courses, learn by modules, and earn certificates.",
 };
