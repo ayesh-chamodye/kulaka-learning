@@ -14,8 +14,6 @@ const COURSES = {
   'cloud': { title: 'Cloud Computing Essentials', price: 79 },
 };
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Shopping cart page.
  * Reads the selected video from query parameters and shows a summary with checkout link.

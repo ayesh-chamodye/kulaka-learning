@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Login page.
  * Allows users to sign in with email/password or Google OAuth.

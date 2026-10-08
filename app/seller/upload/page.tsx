@@ -7,8 +7,6 @@ import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import { uploadToMux } from '@/lib/mux';
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Shape of a video category returned from the database.
  */

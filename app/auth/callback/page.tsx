@@ -4,8 +4,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-export const dynamic = 'force-dynamic';
-
 /**
  * OAuth callback page.
  * Completes the Google sign-in flow and redirects authenticated users to the home page.

@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Signup page.
  * Collects user details and creates a new Supabase Auth account with profile metadata.

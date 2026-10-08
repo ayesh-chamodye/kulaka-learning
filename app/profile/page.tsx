@@ -6,8 +6,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import { put } from '@vercel/blob';
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Profile page for authenticated users.
  * Allows viewing and updating profile details including avatar upload via Vercel Blob.

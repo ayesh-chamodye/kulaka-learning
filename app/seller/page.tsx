@@ -6,8 +6,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Shape of a video record as displayed in the seller dashboard.
  */
